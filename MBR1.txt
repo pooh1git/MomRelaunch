@@ -19,7 +19,7 @@
       var allSelected = '';
           $("#selectId option:selected").each(function(){
         allSelected+=allSelected!='' ? '; '+this.value : this.value;
-      });
+      });<!--testing purpose-->
       alert(allSelected);
       callFuncAF(allSelected);
       return false;
