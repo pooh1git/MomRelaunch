@@ -1,0 +1,170 @@
+<!-- <apex:page controller="DLabCommitmentController" showHeader="false" sidebar="False" language="en_Us" docType="html-5.0" > -->
+
+<apex:page Standardcontroller="Contact" extensions="DLabCommitmentController"  showHeader="false" sidebar="False" language="en_Us" docType="html-5.0" >
+<style>
+    body
+        {
+        background-color:lightpuple;
+        }
+</style> 
+  <head>
+  <title>Volunteer form </title>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.2/jquery.min.js"></script>
+ 
+  <script>  
+  function pressButton()
+  {
+      var allSelected = '';
+          $("#selectId option:selected").each(function(){
+        allSelected+=allSelected!='' ? '; '+this.value : this.value;
+      });
+      alert(allSelected);
+      callFuncAF(allSelected);
+      return false;
+  }
+  
+  function allLetter(xyz){
+               
+                var letters = /^[A-Za-z]+$/;
+               
+                if(xyz.match(letters))
+                  {                 
+                  return true;
+                  }
+                  else
+                  {
+                  alert('Please input alphabet characters only');
+                  
+                  allClear(xyz);
+                 
+                  return false;
+                  }                  
+                   
+                }
+                
+                function allClear(){
+                alert('inside allClear');
+                              
+                 document.getElementById('{!$Component.Form1}').reset();
+               
+  }
+  
+  </script>
+</head>
+<apex:form >
+
+<br></br>
+<div style="font-size:25px;color:black;text-align:center"> <h4><B>  DemocracyLab Volunteer Commitment Form  </B></h4></div>
+<br></br>
+
+
+<apex:pageBlock >
+
+<apex:pageBlockSection >
+<apex:pageBlockSectionItem >
+<apex:outputLabel >
+
+<div style="font-size:15px;color:black;align:center"> First Name </div>
+</apex:outputLabel>
+
+<apex:inputText value="{!FirstName}" label="First Name"/>
+
+</apex:pageBlockSectionItem>
+</apex:pageBlockSection>
+
+
+<br></br>
+<br></br>
+
+<!-- <apex:pageBlockSection >
+<apex:pageBlockSectionItem >
+<apex:outputLabel >
+<div style="font-size:15px;color:black;align:center"><span style="color:red">*</span><h2>Last Name</h2></div>
+
+</apex:outputLabel>
+<apex:inputText value="{!LastName}"/>
+</apex:pageBlockSectionItem>
+</apex:pageBlockSection> -->
+
+<apex:pageBlockSection id="Pbs">
+<apex:pageBlockSectionItem id="Pbsi">
+<apex:outputLabel id="Opl" >
+<div id="err2" style="font-size:15px;color:black;align:center"><span style="color:red">*</span><h2>Last Name</h2></div>
+</apex:outputLabel>
+
+            <apex:inputText value="{!LastName}" id="LnameId" required="true" html-onInput="allLetter(this.value);"/>
+
+</apex:pageBlockSectionItem>
+</apex:pageBlockSection>
+
+
+<br></br>
+<br></br>
+
+<apex:pageBlockSection >
+<apex:pageBlockSectionItem >
+<apex:outputLabel >
+<div style="font-size:15px;color:black;align:center"><span style="color:red">*</span><h2>Email</h2></div>
+</apex:outputLabel>
+<apex:inpuTText value="{!Email}" required="true"/>
+</apex:pageBlockSectionItem>
+</apex:pageBlockSection>
+
+
+<br></br>
+<br></br>
+
+<apex:pageBlockSection >
+<apex:pageBlockSectionItem >
+<apex:outputLabel >
+<div style="font-size:15px;color:black;align:center"><h2> This is to acknowledge that I have attended the DemocracyLab general volunteer orientation and am comitted to volunteering with DemocracyLab for next 3 months for approximately 5 hours per week. </h2></div>
+</apex:outputLabel>
+
+<apex:selectList value="{!CommitmentForm}" >
+                <apex:selectOption itemValue="Yes"/>
+                <apex:selectOption itemValue="No"/>
+</apex:selectList>
+
+
+</apex:pageBlockSectionItem>
+</apex:pageBlockSection>
+
+<br></br>
+<br></br>
+
+<apex:pageBlockSection >
+<apex:pageBlockSectionItem >
+<apex:outputLabel >
+<div style="font-size:15px;color:black;align:center"><h2> The DemocracyLab Volunteer Role to which I am committing is the following: </h2></div>
+</apex:outputLabel> 
+                   
+    <c:MultiselectPicklist leftLabel="Available Options"
+    leftOption="{!InterestOptions}"
+    rightLabel="Selected Options"
+    rightOption="{!SelectedInterests}"
+    size="14"
+    width="150px"/>
+            
+</apex:pageBlockSectionItem>
+</apex:pageBlockSection>
+
+ <apex:pageMessages id="msgId"/>
+
+ 
+ <br></br>
+
+<apex:outputPanel >
+<!-- <div style="font-size:20px;color:black;align:center"> -->
+
+<div style="text-align:center; font-size:20px">
+
+ <apex:commandButton action="{!insertNewContact }" value="Submit" rerender="msgId"/> 
+</div> 
+</apex:outputPanel>
+
+</apex:pageBlock>
+</apex:form>
+   <apex:outputText >{!message}</apex:outputText>
+</apex:page>
