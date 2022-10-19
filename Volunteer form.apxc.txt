@@ -1,0 +1,79 @@
+public class VolunteerControllerNew{
+
+    public String firstName{get;set;}
+    public String lastName{get;set;}
+    public String email{get;set;}
+    public List<SelectOption> selectedOptions{get; set;}
+    public boolean ckeckValue{get;set;}
+    public string selectedValue{get;set;}
+    public String IdOfExistingRecord; 
+    public Contact objCon{get;set;}
+    
+     public VolunteerControllerNew(ApexPages.StandardController stdcontroller) {
+      System.debug('exsisting field values 1:-----');
+   
+            objCon = (Contact)stdcontroller.getRecord();      
+             objCon = new Contact();
+    } 	
+    
+     public PageReference insertNewRecord(){
+        try{
+            List<Contact> lstofCont = [Select Id, Email,FirstName,LastName from Contact where email =:objCon.Email limit 1];            
+            System.debug('exsisting field values 2:-----' + lstofCont );
+            if(lstofCont.size()>0 && lstofCont != null){               
+                PageReference pageRef = new PageReference('/apex/updateRecord');                
+                IdOfExistingRecord = lstofCont[0].Id;
+                return pageRef;              
+            }        	
+            else{
+        		insert objCon;
+            }              
+                 PageReference pageref = new PageReference('/apex/ThanksPage');
+                 return pageref;
+            }        
+            catch(Exception exp){
+                ApexPages.Message msg = new ApexPages.Message(ApexPages.Severity.Error,exp.getMessage());
+                ApexPages.addMessage(msg);
+                return null;
+            }
+        } 
+    
+		Public PageReference updateNewRecord(){            		
+            try{
+                objCon.id = IdOfExistingRecord;          
+                update objCon;             
+                PageReference pageref2 = new PageReference('/apex/ThanksPage');
+                return pageref2;
+            }          
+            catch(Exception exp){
+                ApexPages.Message msg = new ApexPages.Message(ApexPages.Severity.Error,exp.getMessage());
+                ApexPages.addMessage(msg);
+                return null;
+            }
+    	}
+    
+    	Public PageReference goBack(){		
+            try{                
+                PageReference pageref3 = new PageReference('/apex/VolunteerFormNew');
+                return pageref3;
+            }          
+            catch(Exception exp){
+                ApexPages.Message msg = new ApexPages.Message(ApexPages.Severity.Error,exp.getMessage());
+                ApexPages.addMessage(msg);
+                return null;
+            }
+    	}    
+    	
+        Public PageReference exit(){		
+            try{                       
+                PageReference pageref4 = new PageReference('/apex/ReThanks');
+                return pageref4;
+            }          
+            catch(Exception exp){
+                ApexPages.Message msg = new ApexPages.Message(ApexPages.Severity.Error,exp.getMessage());
+                ApexPages.addMessage(msg);
+                return null;
+            }
+    	}
+           
+    }
